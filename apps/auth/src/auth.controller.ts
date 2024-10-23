@@ -8,7 +8,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @MessagePattern(AUTH_PATTERN.HELLO)
-  getHello(): string {
+  getHello() {
     return this.authService.getHello();
   }
 }
