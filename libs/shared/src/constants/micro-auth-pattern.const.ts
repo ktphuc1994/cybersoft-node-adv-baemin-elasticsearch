@@ -1,0 +1,5 @@
+const AUTH_PATTERN = {
+  HELLO: 'BAEMIN_AUTH_HELLO',
+};
+
+export { AUTH_PATTERN };
