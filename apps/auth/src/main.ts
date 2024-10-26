@@ -7,7 +7,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
   const sharedService = app.get(SharedService);
 
-  app.connectMicroservice(sharedService.getRmqOptions(AUTH_QUEUE));
+  app.connectMicroservice(sharedService.getRmqOptions(AUTH_QUEUE), {
+    inheritAppConfig: true,
+  });
   app.startAllMicroservices();
 }
 bootstrap();

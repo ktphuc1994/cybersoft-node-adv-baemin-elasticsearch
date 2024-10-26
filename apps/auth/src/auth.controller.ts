@@ -1,7 +1,17 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards, UsePipes } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import { AUTH_PATTERN } from '@app/shared/constants/micro-auth-pattern.const';
+import { JwtGuard } from './guards/jwt.guard';
+import {
+  CreateUserRequest,
+  createUserRequestSchema,
+  LoginRequest,
+  loginRequestSchema,
+} from '../../../libs/shared/src/schema/user.schema';
+import { AccessToken } from '../../../libs/shared/src/types/auth.type';
+import { ZodValidationPipe } from '@app/shared/pipes/zodValidation.pipe';
+import { RequestWithUser, UserInReq } from '@app/shared/types/shared.type';
 
 @Controller()
 export class AuthController {
@@ -10,5 +20,24 @@ export class AuthController {
   @MessagePattern(AUTH_PATTERN.HELLO)
   getHello() {
     return this.authService.getHello();
+  }
+
+  @MessagePattern(AUTH_PATTERN.REGISTER)
+  @UsePipes(new ZodValidationPipe(createUserRequestSchema))
+  async register(@Payload() newUser: CreateUserRequest): Promise<AccessToken> {
+    return this.authService.register(newUser);
+  }
+
+  @MessagePattern(AUTH_PATTERN.LOGIN)
+  @UsePipes(new ZodValidationPipe(loginRequestSchema))
+  async login(@Payload() loginInfo: LoginRequest): Promise<AccessToken> {
+    const userInfo = await this.authService.validateUser(loginInfo);
+    return this.authService.login(userInfo);
+  }
+
+  @UseGuards(JwtGuard)
+  @MessagePattern(AUTH_PATTERN.AUTHEN)
+  async authenticate(@Payload() data: RequestWithUser): Promise<UserInReq> {
+    return data.user;
   }
 }
