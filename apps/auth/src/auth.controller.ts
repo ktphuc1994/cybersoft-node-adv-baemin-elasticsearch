@@ -1,7 +1,7 @@
 import { Controller, UseGuards, UsePipes } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
-import { AUTH_PATTERN } from '@app/shared/constants/micro-auth-pattern.const';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { AUTH_PATTERN } from '@app/shared/constants/microservice-pattern.const';
 import { JwtGuard } from './guards/jwt.guard';
 import {
   CreateUserRequest,

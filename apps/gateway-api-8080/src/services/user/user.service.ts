@@ -1,4 +1,4 @@
-import { USER_PATTERN } from '@app/shared/constants/micro-auth-pattern.const';
+import { USER_PATTERN } from '@app/shared/constants/microservice-pattern.const';
 import { USER_SERVICE_NAME } from '@app/shared/constants/microservice.const';
 import { Address, UserProfile } from '@app/shared/schema/user.schema';
 import { Inject, Injectable } from '@nestjs/common';

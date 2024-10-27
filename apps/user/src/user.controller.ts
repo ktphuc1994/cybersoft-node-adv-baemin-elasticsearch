@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { UserService } from './user.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { USER_PATTERN } from '@app/shared/constants/micro-auth-pattern.const';
+import { USER_PATTERN } from '@app/shared/constants/microservice-pattern.const';
 
 @Controller()
 export class UserController {

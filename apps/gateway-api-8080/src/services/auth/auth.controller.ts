@@ -4,7 +4,6 @@ import {
   CreateUserRequest,
   LoginRequest,
 } from '@app/shared/schema/user.schema';
-import { AccessToken } from '@app/shared/types/auth.type';
 
 @Controller('auth')
 export class AuthController {

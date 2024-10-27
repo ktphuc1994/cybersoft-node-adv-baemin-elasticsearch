@@ -6,6 +6,8 @@ import { SharedModule } from '@app/shared';
 import {
   AUTH_QUEUE,
   AUTH_SERVICE_NAME,
+  FOOD_QUEUE,
+  FOOD_SERVICE_NAME,
   USER_QUEUE,
   USER_SERVICE_NAME,
 } from '@app/shared/constants/microservice.const';
@@ -16,18 +18,22 @@ import { GatewayGlobalExceptionsFilter } from './exceptions/global-exception.fil
 import { GatewayHttpExceptionsFilter } from './exceptions/http-exception.filter';
 import { UserService } from './services/user/user.service';
 import { UserController } from './services/user/user.controller';
+import { FoodController } from './services/food/food.controller';
+import { FoodService } from './services/food/food.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: './.env' }),
     SharedModule.registerRmq(AUTH_SERVICE_NAME, AUTH_QUEUE),
     SharedModule.registerRmq(USER_SERVICE_NAME, USER_QUEUE),
+    SharedModule.registerRmq(FOOD_SERVICE_NAME, FOOD_QUEUE),
   ],
-  controllers: [AppController, AuthController, UserController],
+  controllers: [AppController, AuthController, UserController, FoodController],
   providers: [
     AppService,
     AuthService,
     UserService,
+    FoodService,
     { provide: APP_FILTER, useClass: GatewayGlobalExceptionsFilter },
     { provide: APP_FILTER, useClass: GatewayHttpExceptionsFilter },
   ],

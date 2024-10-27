@@ -9,7 +9,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { AUTH_SERVICE_NAME } from '../constants/microservice.const';
 import { Request } from 'express';
-import { AUTH_PATTERN } from '../constants/micro-auth-pattern.const';
+import { AUTH_PATTERN } from '../constants/microservice-pattern.const';
 import { UserInReq } from '../types/shared.type';
 
 @Injectable()
@@ -34,7 +34,7 @@ export class AppGuard implements CanActivate {
       );
 
       request['user'] = userInfo;
-    } catch (error) {
+    } catch (_error) {
       throw new UnauthorizedException();
     }
 

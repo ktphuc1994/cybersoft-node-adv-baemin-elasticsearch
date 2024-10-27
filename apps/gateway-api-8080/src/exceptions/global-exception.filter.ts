@@ -7,7 +7,6 @@ export class GatewayGlobalExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const res = ctx.getResponse<Response>();
 
-    console.log({ exception });
     const statusCode = exception.statusCode ?? 500;
     const message = exception.message
       ? exception.message

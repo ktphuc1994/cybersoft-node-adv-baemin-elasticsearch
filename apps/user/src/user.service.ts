@@ -29,7 +29,7 @@ export class UserService {
 
     try {
       return userProfileSchema.parse(userInfo);
-    } catch (error) {
+    } catch (_error) {
       throw new ConflictException(
         'Có sự sai lệnh trong dữ liệu thông tin người dùng. Vui lòng liên hệ chăm sóc khách hàng để được hỗ trợ.',
       );

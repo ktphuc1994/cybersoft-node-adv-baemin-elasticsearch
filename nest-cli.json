@@ -45,6 +45,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/user/tsconfig.app.json"
       }
+    },
+    "food": {
+      "type": "application",
+      "root": "apps/food",
+      "entryFile": "main",
+      "sourceRoot": "apps/food/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/food/tsconfig.app.json"
+      }
     }
   }
 }
