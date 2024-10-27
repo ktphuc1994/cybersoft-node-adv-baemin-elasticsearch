@@ -17,11 +17,6 @@ import { RequestWithUser, UserInReq } from '@app/shared/types/shared.type';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @MessagePattern(AUTH_PATTERN.HELLO)
-  getHello() {
-    return this.authService.getHello();
-  }
-
   @MessagePattern(AUTH_PATTERN.REGISTER)
   @UsePipes(new ZodValidationPipe(createUserRequestSchema))
   async register(@Payload() newUser: CreateUserRequest): Promise<AccessToken> {

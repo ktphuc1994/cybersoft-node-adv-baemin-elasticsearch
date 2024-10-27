@@ -3,5 +3,7 @@ Dockerfile
 node_modules
 dist
 README.md
-
+.git
 yarn-debug.log*
+.env
+.env*.local

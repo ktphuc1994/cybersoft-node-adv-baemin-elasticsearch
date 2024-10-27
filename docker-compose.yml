@@ -1,0 +1,44 @@
+version: '3.8'
+name: baemin-elasticsearch-node-adv-khucthienphuc
+services:
+  baemin-backend-gateway-container:
+    container_name: baemin-backend-gateway-container
+    build:
+      context: .
+      dockerfile: ./apps/gateway-api-8080/Dockerfile
+    image: baemin-backend-gateway-img
+    ports:
+      - 8080:8080
+    env_file:
+      - .env.example
+    depends_on:
+      - baemin-backend-auth-container
+      - baemin-backend-user-container
+    networks:
+      - node_network
+
+  baemin-backend-auth-container:
+    container_name: baemin-backend-auth-container
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+    image: baemin-backend-auth-img
+    env_file:
+      - .env.example
+    networks:
+      - node_network
+
+  baemin-backend-user-container:
+    container_name: baemin-backend-user-container
+    build:
+      context: .
+      dockerfile: ./apps/user/Dockerfile
+    image: baemin-backend-user-img
+    env_file:
+      - .env.example
+    networks:
+      - node_network
+
+networks:
+  node_network:
+    external: true

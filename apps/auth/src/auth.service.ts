@@ -11,7 +11,6 @@ import {
   AccessTokenPayload,
 } from '../../../libs/shared/src/types/auth.type';
 import { JwtService } from '@nestjs/jwt';
-import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class AuthService {
@@ -19,10 +18,6 @@ export class AuthService {
     private prismaService: PrismaService,
     private jwtService: JwtService,
   ) {}
-
-  getHello() {
-    return this.prismaService.user.findMany();
-  }
 
   async validateUser(loginInfo: LoginRequest): Promise<User> {
     const user = await this.prismaService.user.findFirst({
