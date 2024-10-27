@@ -15,6 +15,7 @@ services:
       - baemin-backend-auth-container
       - baemin-backend-user-container
       - baemin-backend-food-container
+      - baemin-backend-cart-container
     networks:
       - node_network
 
@@ -46,6 +47,17 @@ services:
       context: .
       dockerfile: ./apps/food/Dockerfile
     image: baemin-backend-food-img
+    env_file:
+      - .env.example
+    networks:
+      - node_network
+
+  baemin-backend-cart-container:
+    container_name: baemin-backend-cart-container
+    build:
+      context: .
+      dockerfile: ./apps/cart/Dockerfile
+    image: baemin-backend-cart-img
     env_file:
       - .env.example
     networks:
