@@ -22,6 +22,7 @@ const foodSchema = todayFoodSchema
   .omit({ store_name: true, store_address: true })
   .extend({
     price: z.number(),
+    stock: z.number(),
     description: z.string().nullable().optional(),
     store_id: z.number(),
     tags: z.string().array(),

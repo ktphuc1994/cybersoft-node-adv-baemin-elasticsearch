@@ -29,8 +29,11 @@ export class FoodController {
   }
 
   @MessagePattern(FOOD_PATTERN.GET_BY_ID)
-  getFoodDetail(@Payload(EnhancedParseIntPipe) foodId: number) {
-    return this.foodService.getFoodDetail(foodId);
+  getFoodDetail(
+    @Payload(new EnhancedParseIntPipe({ fieldName: 'food_id' }))
+    food_id: number,
+  ) {
+    return this.foodService.getFoodDetail(food_id);
   }
 
   @MessagePattern(FOOD_PATTERN.CHECK_STOCK)
