@@ -10,6 +10,8 @@ import {
   CART_SERVICE_NAME,
   FOOD_QUEUE,
   FOOD_SERVICE_NAME,
+  ORDER_QUEUE,
+  ORDER_SERVICE_NAME,
   USER_QUEUE,
   USER_SERVICE_NAME,
 } from '@app/shared/constants/microservice.const';
@@ -24,6 +26,8 @@ import { FoodController } from './services/food/food.controller';
 import { FoodService } from './services/food/food.service';
 import { CartController } from './services/cart/cart.controller';
 import { CartService } from './services/cart/cart.service';
+import { OrderService } from './services/order/order.service';
+import { OrderController } from './services/order/order.controller';
 
 @Module({
   imports: [
@@ -32,6 +36,7 @@ import { CartService } from './services/cart/cart.service';
     SharedModule.registerRmq(USER_SERVICE_NAME, USER_QUEUE),
     SharedModule.registerRmq(FOOD_SERVICE_NAME, FOOD_QUEUE),
     SharedModule.registerRmq(CART_SERVICE_NAME, CART_QUEUE),
+    SharedModule.registerRmq(ORDER_SERVICE_NAME, ORDER_QUEUE),
   ],
   controllers: [
     AppController,
@@ -39,6 +44,7 @@ import { CartService } from './services/cart/cart.service';
     UserController,
     FoodController,
     CartController,
+    OrderController,
   ],
   providers: [
     AppService,
@@ -46,6 +52,7 @@ import { CartService } from './services/cart/cart.service';
     UserService,
     FoodService,
     CartService,
+    OrderService,
     { provide: APP_FILTER, useClass: GatewayGlobalExceptionsFilter },
     { provide: APP_FILTER, useClass: GatewayHttpExceptionsFilter },
   ],
