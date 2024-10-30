@@ -14,6 +14,8 @@ import {
   ORDER_SERVICE_NAME,
   USER_QUEUE,
   USER_SERVICE_NAME,
+  VOUCHER_QUEUE,
+  VOUCHER_SERVICE_NAME,
 } from '@app/shared/constants/microservice.const';
 import { AuthService } from './services/auth/auth.service';
 import { AuthController } from './services/auth/auth.controller';
@@ -37,6 +39,7 @@ import { OrderController } from './services/order/order.controller';
     SharedModule.registerRmq(FOOD_SERVICE_NAME, FOOD_QUEUE),
     SharedModule.registerRmq(CART_SERVICE_NAME, CART_QUEUE),
     SharedModule.registerRmq(ORDER_SERVICE_NAME, ORDER_QUEUE),
+    SharedModule.registerRmq(VOUCHER_SERVICE_NAME, VOUCHER_QUEUE),
   ],
   controllers: [
     AppController,

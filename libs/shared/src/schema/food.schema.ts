@@ -8,6 +8,7 @@ const foodRequestSchema = z.object({
   page: stringIntegerSchema.optional(),
   pageSize: stringIntegerSchema.optional(),
 });
+type FoodRequest = z.infer<typeof foodRequestSchema>;
 
 const todayFoodSchema = z.object({
   food_id: z.number(),
@@ -17,6 +18,7 @@ const todayFoodSchema = z.object({
   store_address: z.string(),
   store_id: z.number(),
 });
+type TodayFood = z.infer<typeof todayFoodSchema>;
 
 const foodSchema = todayFoodSchema
   .omit({ store_name: true, store_address: true })
@@ -27,28 +29,46 @@ const foodSchema = todayFoodSchema
     store_id: z.number(),
     tags: z.string().array(),
   });
+type Food = z.infer<typeof foodSchema>;
 
 const checkStockRequestSchema = z.object({
   food_id: z.number().int(),
   quantity: z.number().int(),
 });
+type CheckStockRequest = z.infer<typeof checkStockRequestSchema>;
+
 const checkStockResponseSchema = checkStockRequestSchema.extend({
   stock: z.number().int(),
 });
-
-type FoodRequest = z.infer<typeof foodRequestSchema>;
-type TodayFood = z.infer<typeof todayFoodSchema>;
-type Food = z.infer<typeof foodSchema>;
-type CheckStockRequest = z.infer<typeof checkStockRequestSchema>;
 type CheckStockResponse = z.infer<typeof checkStockResponseSchema>;
+
+const validateFoodInStoreRequestSchema = z.object({
+  foodIds: stringIntegerSchema.array(),
+  storeId: stringIntegerSchema,
+});
+type ValidateFoodInStoreRequest = z.infer<
+  typeof validateFoodInStoreRequestSchema
+>;
+
+const updateFoodRequestSchema = foodSchema
+  .omit({ food_id: true })
+  .partial()
+  .extend({
+    food_id: z.number().int(),
+  });
+type UpdateFoodRequest = z.infer<typeof updateFoodRequestSchema>;
 
 export {
   todayFoodSchema,
   foodRequestSchema,
   checkStockRequestSchema,
+  validateFoodInStoreRequestSchema,
+  updateFoodRequestSchema,
   type FoodRequest,
   type TodayFood,
   type Food,
   type CheckStockRequest,
   type CheckStockResponse,
+  type ValidateFoodInStoreRequest,
+  type UpdateFoodRequest,
 };

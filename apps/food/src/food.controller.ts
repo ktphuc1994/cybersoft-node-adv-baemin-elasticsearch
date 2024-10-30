@@ -1,4 +1,4 @@
-import { Controller, UsePipes } from '@nestjs/common';
+import { BadRequestException, Controller, UsePipes } from '@nestjs/common';
 import { FoodService } from './food.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { FOOD_PATTERN } from '@app/shared/constants/microservice-pattern.const';
@@ -10,6 +10,10 @@ import {
   FoodRequest,
   foodRequestSchema,
   TodayFood,
+  UpdateFoodRequest,
+  updateFoodRequestSchema,
+  ValidateFoodInStoreRequest,
+  validateFoodInStoreRequestSchema,
 } from '@app/shared/schema/food.schema';
 import { EnhancedParseIntPipe } from '@app/shared/pipes/parse-int.pipe';
 
@@ -37,8 +41,20 @@ export class FoodController {
   }
 
   @MessagePattern(FOOD_PATTERN.CHECK_STOCK)
-  @UsePipes(new ZodValidationPipe(checkStockRequestSchema))
+  @UsePipes(new ZodValidationPipe(checkStockRequestSchema.array()))
   checkStock(@Payload() requestInfo: CheckStockRequest[]) {
     return this.foodService.checkStock(requestInfo);
+  }
+
+  @MessagePattern(FOOD_PATTERN.VALIDATE_FOOD_IN_STORE)
+  @UsePipes(new ZodValidationPipe(validateFoodInStoreRequestSchema))
+  validateFoodInStore(@Payload() requestInfo: ValidateFoodInStoreRequest) {
+    return this.foodService.validateFoodInStore(requestInfo);
+  }
+
+  @MessagePattern(FOOD_PATTERN.UPDATE)
+  @UsePipes(new ZodValidationPipe(updateFoodRequestSchema))
+  updateFood(@Payload() updateRequest: UpdateFoodRequest) {
+    return this.foodService.updateFood(updateRequest);
   }
 }

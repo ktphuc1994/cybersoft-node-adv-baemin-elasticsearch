@@ -3,7 +3,9 @@ import { UnprocessableContentException } from '@app/shared/exceptions/Unprocessa
 import { PrismaService } from '@app/shared/prisma/prisma.service';
 import {
   AddCartRequest,
+  CartFood,
   RemoveCartRequest,
+  RemoveManyCartRequest,
   UpdateCartRequest,
   ValidateCartRequest,
 } from '@app/shared/schema/cart.schema';
@@ -125,7 +127,16 @@ export class CartService {
     }
   }
 
-  async validateCartItems({ user_id, foodIds }: ValidateCartRequest) {
+  removeManyCartItems({ user_id, foodIds }: RemoveManyCartRequest) {
+    return this.prismaService.cart.deleteMany({
+      where: { user_id, food_id: { in: foodIds } },
+    });
+  }
+
+  async validateCartItems({
+    user_id,
+    foodIds,
+  }: ValidateCartRequest): Promise<CartFood[] | null> {
     if (checkIsArrayDuplicated(foodIds))
       throw new BadRequestException('Món ăn bị trùng.');
 
@@ -141,6 +152,10 @@ export class CartService {
     });
 
     if (cartFoodList.length !== foodIds.length) return null;
-    return cartFoodList;
+    return cartFoodList.map((foodInfo) => ({
+      ...foodInfo.food,
+      food_id: foodInfo.food_id,
+      quantity: foodInfo.quantity,
+    }));
   }
 }

@@ -8,6 +8,8 @@ import {
   addCartRequestSchema,
   RemoveCartRequest,
   removeCartRequestSchema,
+  RemoveManyCartRequest,
+  removeManyCartRequestSchema,
   UpdateCartRequest,
   updateCartRequestSchema,
   ValidateCartRequest,
@@ -44,6 +46,12 @@ export class CartController {
   @UsePipes(new ZodValidationPipe(removeCartRequestSchema))
   removeCartItem(@Payload() removeCartInfo: RemoveCartRequest) {
     return this.cartService.removeCartItem(removeCartInfo);
+  }
+
+  @MessagePattern(CART_PATTERN.REMOVE_MANY)
+  @UsePipes(new ZodValidationPipe(removeManyCartRequestSchema))
+  removeManyCartItems(@Payload() removeRequest: RemoveManyCartRequest) {
+    return this.cartService.removeManyCartItems(removeRequest);
   }
 
   @MessagePattern(CART_PATTERN.VALIDATE)

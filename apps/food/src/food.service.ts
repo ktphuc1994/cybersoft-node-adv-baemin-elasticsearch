@@ -5,6 +5,8 @@ import {
   Food,
   FoodRequest,
   TodayFood,
+  UpdateFoodRequest,
+  ValidateFoodInStoreRequest,
 } from '@app/shared/schema/food.schema';
 import { filterPageAndPageSize } from '@app/shared/utils/common';
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -93,5 +95,28 @@ export class FoodService {
     if (errorMessage) throw new BadRequestException(errorMessage);
 
     return FoodQuantityAndStock;
+  }
+
+  async validateFoodInStore(
+    validateRequest: ValidateFoodInStoreRequest,
+  ): Promise<ValidateFoodInStoreRequest> {
+    const { foodIds, storeId } = validateRequest;
+    const foodList = await this.prismaService.food.findMany({
+      where: { store_id: storeId, food_id: { in: foodIds } },
+      select: { food_id: true },
+    });
+
+    if (foodList.length === 0 || foodList.length !== foodIds.length)
+      throw new BadRequestException(
+        'Món ăn (foodIds) và cửa hàng (storeId) không trùng khớp',
+      );
+    return validateRequest;
+  }
+
+  async updateFood({ food_id, ...updateData }: UpdateFoodRequest) {
+    return this.prismaService.food.update({
+      where: { food_id },
+      data: updateData,
+    });
   }
 }

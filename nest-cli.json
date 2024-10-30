@@ -72,6 +72,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/order/tsconfig.app.json"
       }
+    },
+    "voucher": {
+      "type": "application",
+      "root": "apps/voucher",
+      "entryFile": "main",
+      "sourceRoot": "apps/voucher/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/voucher/tsconfig.app.json"
+      }
     }
   }
 }
