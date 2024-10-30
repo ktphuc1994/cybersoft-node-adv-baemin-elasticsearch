@@ -9,12 +9,18 @@ import {
   ValidateFoodInStoreRequest,
 } from '@app/shared/schema/food.schema';
 import { filterPageAndPageSize } from '@app/shared/utils/common';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { FOOD_TAGS } from './constants/food.const';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
+import { REDIS_TODAY_FOOD } from './constants/redis-key.const';
 
 @Injectable()
 export class FoodService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) {}
 
   getFood(foodFilter: FoodRequest): Promise<Food[]> {
     const takeSkip = filterPageAndPageSize(
@@ -35,8 +41,12 @@ export class FoodService {
     });
   }
 
-  getTodayFood(): Promise<TodayFood[]> {
-    return this.prismaService.$queryRaw<TodayFood[]>`
+  async getTodayFood(): Promise<TodayFood[]> {
+    const cacheTodayFood =
+      await this.cacheManager.get<TodayFood[]>(REDIS_TODAY_FOOD);
+    if (cacheTodayFood) return cacheTodayFood;
+
+    const todayFood = await this.prismaService.$queryRaw<TodayFood[]>`
       SELECT
       food.food_id,
       food.name,
@@ -48,6 +58,9 @@ export class FoodService {
       JOIN store ON food.store_id = store.store_id
       WHERE ${FOOD_TAGS.TODAY} = ANY(food.tags);
     `;
+
+    this.cacheManager.set(REDIS_TODAY_FOOD, todayFood);
+    return todayFood;
   }
 
   async getFoodDetail(food_id: number) {

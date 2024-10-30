@@ -12,12 +12,14 @@ import { BannerController } from './services/banner/banner.controller';
 import { MenuController } from './services/menu/menu.controller';
 import { BannerService } from './services/banner/banner.service';
 import { MenuService } from './services/menu/menu.service';
+import { RedisModule } from '@app/shared/redis/redis.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: './.env' }),
     SharedModule,
     PrismaModule,
+    RedisModule,
   ],
   controllers: [
     FoodController,
