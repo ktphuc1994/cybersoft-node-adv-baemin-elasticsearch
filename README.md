@@ -1,85 +1,67 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+<h1 align="center">
+  Hướng dẫn sử dụng
+</h1>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Database
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Nằm trong folder `./sql`  
+Database management systems: `PostgreSQL`  
+Database name: `db_baemin`  
+Mật khẩu và user của PostgreSQL có thể được cập nhật trong file `./back_end/.env.example`.
 
-## Description
+`postgres_db_baemin.sql`: file chứa định nghĩa table và column.  
+`postgres_db_baemin_data.sql`: file chứa mock data.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
-```bash
-$ yarn install
+```
+NestJS cần có database để chạy.
+Chạy toàn bộ script SQL trong 2 file trên để có database.
 ```
 
-## Compile and run the project
+## Elasticsearch container
 
-```bash
-# development
-$ yarn run start
+Cần phải có một container Elasticsearch để có thể chạy `Food Service`.  
+Tên mặc định của Elasticsearch container là `elasticsearch`.  
+Mật khẩu và user của Elasticsearch có thể được cập nhật trong file `./back_end/.env.example`.
 
-# watch mode
-$ yarn run start:dev
+## Docker Network
 
-# production mode
-$ yarn run start:prod
+Network chung của database, front_end và back_end là:
+
+```
+node_network
 ```
 
-## Run tests
+## Build dự án bằng docker
 
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+# production
+$ docker compose up -d
 ```
 
-## Resources
+## Postman
 
-Check out a few resources that may come in handy when working with NestJS:
+File JSON của `Postman` nằm tại: `./postman/Homework_Microservice.postman_collection`.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Để khởi tạo data Food cho Elasticsearch có thể chạy API `Elasticsearch Populate` trong postman, hoặc chạy trực tiếp API `Elasticsearch Search Food`.
 
-## Support
+## Tài khoản mặc định
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Tài khoản mặc định để đăng nhập và sử dụng các tính năng cần authen:
 
-## Stay in touch
+```
+Email: khucthienphuc@gmail.com
+Password: ktphuc1994
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Lưu ý
 
-## License
+Khi vào `/dashboard` sẽ không có dữ liệu trong 60 giây đầu tiên.  
+Sau 60 giây tải lại trang sẽ có dữ liệu.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### **Nguyên nhân:**
+
+`DASHBOARD` là trang `ISR` (Incremental Static Regeneration), nên khi build sẽ yêu cầu fetch data từ phía backend để có dữ liệu tạo trang.
+
+Nhưng Backend lại được build cùng lúc với Frontend, nên không thể truy cập backend. Dẫn đến không có dữ liệu.
+
+Trang `DASHBOARD` được cài đặt sẽ fetch dữ liệu mới trong vòng 60 giây `(revalidate = 60)`, nên sẽ cập nhật dữ liệu sau mỗi 60 giây.
