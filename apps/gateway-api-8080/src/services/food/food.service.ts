@@ -1,6 +1,11 @@
 import { FOOD_PATTERN } from '@app/shared/constants/microservice-pattern.const';
 import { FOOD_SERVICE_NAME } from '@app/shared/constants/microservice.const';
-import { Food, FoodRequest, TodayFood } from '@app/shared/schema/food.schema';
+import {
+  Food,
+  FoodElasticRequest,
+  FoodRequest,
+  TodayFood,
+} from '@app/shared/schema/food.schema';
 import { StoreAndMenu } from '@app/shared/schema/store.schema';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
@@ -11,6 +16,17 @@ export class FoodService {
   constructor(
     @Inject(FOOD_SERVICE_NAME) private foodMicroservice: ClientProxy,
   ) {}
+
+  getFoodWithElastic(filter: FoodElasticRequest) {
+    return this.foodMicroservice.send(FOOD_PATTERN.ELASTIC_SEARCH_FOOD, filter);
+  }
+
+  populateElasticData(isForceUpdate: boolean) {
+    return this.foodMicroservice.send(
+      FOOD_PATTERN.ELASTIC_POPULATE,
+      isForceUpdate,
+    );
+  }
 
   getFood(foodFilter: FoodRequest): Observable<Food[]> {
     return this.foodMicroservice.send<Food[], FoodRequest>(

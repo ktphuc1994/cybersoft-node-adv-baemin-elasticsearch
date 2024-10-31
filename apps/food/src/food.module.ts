@@ -13,6 +13,7 @@ import { MenuController } from './services/menu/menu.controller';
 import { BannerService } from './services/banner/banner.service';
 import { MenuService } from './services/menu/menu.service';
 import { RedisModule } from '@app/shared/redis/redis.module';
+import { ElasticModule } from '@app/shared/elastic/elastic.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { RedisModule } from '@app/shared/redis/redis.module';
     SharedModule,
     PrismaModule,
     RedisModule,
+    ElasticModule,
   ],
   controllers: [
     FoodController,

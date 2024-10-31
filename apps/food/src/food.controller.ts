@@ -7,6 +7,8 @@ import {
   CheckStockRequest,
   checkStockRequestSchema,
   Food,
+  FoodElasticRequest,
+  foodElasticRequestSchema,
   FoodRequest,
   foodRequestSchema,
   TodayFood,
@@ -20,6 +22,17 @@ import { EnhancedParseIntPipe } from '@app/shared/pipes/parse-int.pipe';
 @Controller()
 export class FoodController {
   constructor(private readonly foodService: FoodService) {}
+
+  @MessagePattern(FOOD_PATTERN.ELASTIC_SEARCH_FOOD)
+  @UsePipes(new ZodValidationPipe(foodElasticRequestSchema))
+  getFoodWithElastic(@Payload() filter: FoodElasticRequest) {
+    return this.foodService.getFoodWithElastic(filter);
+  }
+
+  @MessagePattern(FOOD_PATTERN.ELASTIC_POPULATE)
+  populateElasticData(@Payload() isForceUpdate: boolean) {
+    return this.foodService.populateElasticData(isForceUpdate);
+  }
 
   @MessagePattern(FOOD_PATTERN.LIST)
   @UsePipes(new ZodValidationPipe(foodRequestSchema))

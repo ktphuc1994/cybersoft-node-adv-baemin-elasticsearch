@@ -10,6 +10,9 @@ const foodRequestSchema = z.object({
 });
 type FoodRequest = z.infer<typeof foodRequestSchema>;
 
+const foodElasticRequestSchema = foodRequestSchema.omit({ menuId: true });
+type FoodElasticRequest = z.infer<typeof foodElasticRequestSchema>;
+
 const todayFoodSchema = z.object({
   food_id: z.number(),
   name: z.string(),
@@ -26,7 +29,6 @@ const foodSchema = todayFoodSchema
     price: z.number(),
     stock: z.number(),
     description: z.string().nullable().optional(),
-    store_id: z.number(),
     tags: z.string().array(),
   });
 type Food = z.infer<typeof foodSchema>;
@@ -61,10 +63,12 @@ type UpdateFoodRequest = z.infer<typeof updateFoodRequestSchema>;
 export {
   todayFoodSchema,
   foodRequestSchema,
+  foodElasticRequestSchema,
   checkStockRequestSchema,
   validateFoodInStoreRequestSchema,
   updateFoodRequestSchema,
   type FoodRequest,
+  type FoodElasticRequest,
   type TodayFood,
   type Food,
   type CheckStockRequest,
