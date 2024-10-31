@@ -1,6 +1,15 @@
 version: '3.8'
 name: baemin-elasticsearch-node-adv-khucthienphuc
 services:
+  baemin-backend-redis:
+    container_name: baemin-backend-redis
+    image: redis:7.4.1-alpine
+    ports:
+      - 6379:6379
+    command: redis-server --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    networks:
+      - node_network
+
   baemin-backend-gateway-container:
     container_name: baemin-backend-gateway-container
     build:
@@ -51,6 +60,8 @@ services:
     image: baemin-backend-food-img
     env_file:
       - .env.example
+    depends_on:
+      - baemin-backend-redis
     networks:
       - node_network
 
