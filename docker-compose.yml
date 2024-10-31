@@ -13,13 +13,13 @@ services:
   baemin-backend-gateway-container:
     container_name: baemin-backend-gateway-container
     build:
-      context: .
-      dockerfile: ./apps/gateway-api-8080/Dockerfile
+      context: ./back_end
+      dockerfile: ./back_end/apps/gateway-api-8080/Dockerfile
     image: baemin-backend-gateway-img
     ports:
       - 8080:8080
     env_file:
-      - .env.example
+      - ./back_end/.env.example
     depends_on:
       - baemin-backend-auth-container
       - baemin-backend-user-container
@@ -33,33 +33,33 @@ services:
   baemin-backend-auth-container:
     container_name: baemin-backend-auth-container
     build:
-      context: .
-      dockerfile: ./apps/auth/Dockerfile
+      context: ./back_end
+      dockerfile: ./back_end/apps/auth/Dockerfile
     image: baemin-backend-auth-img
     env_file:
-      - .env.example
+      - ./back_end/.env.example
     networks:
       - node_network
 
   baemin-backend-user-container:
     container_name: baemin-backend-user-container
     build:
-      context: .
-      dockerfile: ./apps/user/Dockerfile
+      context: ./back_end
+      dockerfile: ./back_end/apps/user/Dockerfile
     image: baemin-backend-user-img
     env_file:
-      - .env.example
+      - ./back_end/.env.example
     networks:
       - node_network
 
   baemin-backend-food-container:
     container_name: baemin-backend-food-container
     build:
-      context: .
-      dockerfile: ./apps/food/Dockerfile
+      context: ./back_end
+      dockerfile: ./back_end/apps/food/Dockerfile
     image: baemin-backend-food-img
     env_file:
-      - .env.example
+      - ./back_end/.env.example
     depends_on:
       - baemin-backend-redis
     networks:
@@ -68,33 +68,50 @@ services:
   baemin-backend-cart-container:
     container_name: baemin-backend-cart-container
     build:
-      context: .
-      dockerfile: ./apps/cart/Dockerfile
+      context: ./back_end
+      dockerfile: ./back_end/apps/cart/Dockerfile
     image: baemin-backend-cart-img
     env_file:
-      - .env.example
+      - ./back_end/.env.example
     networks:
       - node_network
 
   baemin-backend-order-container:
     container_name: baemin-backend-order-container
     build:
-      context: .
-      dockerfile: ./apps/order/Dockerfile
+      context: ./back_end
+      dockerfile: ./back_end/apps/order/Dockerfile
     image: baemin-backend-order-img
     env_file:
-      - .env.example
+      - ./back_end/.env.example
     networks:
       - node_network
 
   baemin-backend-voucher-container:
     container_name: baemin-backend-voucher-container
     build:
-      context: .
-      dockerfile: ./apps/voucher/Dockerfile
+      context: ./back_end
+      dockerfile: ./back_end/apps/voucher/Dockerfile
     image: baemin-backend-voucher-img
     env_file:
-      - .env.example
+      - ./back_end/.env.example
+    networks:
+      - node_network
+
+  baemin-frontend-nextjs-container:
+    container_name: baemin-frontend-nextjs-container
+    build:
+      context: ./front_end
+      args:
+        BUILD_ENVIRONMENT: local
+        NEXT_PUBLIC_CLIENT_API_URL: http://localhost:8080
+    image: baemin-frontend-nextjs-img
+    ports:
+      - 3000:3000
+    env_file:
+      - ./front_end/.env.production.sample
+    depends_on:
+      - baemin-backend-gateway-container
     networks:
       - node_network
 
